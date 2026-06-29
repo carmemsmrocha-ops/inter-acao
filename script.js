@@ -1,190 +1,91 @@
-const app = document.getElementById('app');
-let scene = 0;
-let soundOn = true;
+const stage = document.getElementById('stage');
+const startButton = document.getElementById('startButton');
 let audioCtx;
-let explored = new Set();
 
-const soundButton = document.createElement('button');
-soundButton.className = 'btn dark soundToggle';
-soundButton.textContent = 'Som: ligado';
-soundButton.onclick = () => {
-  soundOn = !soundOn;
-  soundButton.textContent = soundOn ? 'Som: ligado' : 'Som: desligado';
-  beep(soundOn ? 660 : 220, .06, 'sine');
-};
-document.body.appendChild(soundButton);
-
-function beep(freq = 440, duration = .08, type = 'sine', gainValue = .035) {
-  if (!soundOn) return;
+function sound(type = 'soft') {
   try {
     audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    osc.type = type;
-    osc.frequency.value = freq;
-    gain.gain.value = gainValue;
     osc.connect(gain);
     gain.connect(audioCtx.destination);
-    osc.start();
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
-    osc.stop(audioCtx.currentTime + duration);
-  } catch(e) {}
-}
-function transition(freq = 280) { beep(freq, .08, 'triangle'); }
-function clickSound() { beep(520, .045, 'square', .025); }
-function successSound() { beep(740, .07, 'sine'); setTimeout(() => beep(980, .08, 'sine'), 85); }
-
-function render(html) {
-  app.innerHTML = `<section class="scene"><div class="content">${html}</div><div class="footerline"></div></section>`;
-}
-function next() { scene++; transition(360 + scene * 25); scenes[scene](); }
-
-const scenes = [intro, possibilidade, experiencia, minhaParte, enem, partes, decisao];
-
-function intro() {
-  render(`
-    <p class="kicker">INTER + AÇÃO</p>
-    <h1>O próximo semestre ainda não existe.</h1>
-    <p class="bigline">Você pode ajudar a decidir como ele será.</p>
-    <p>Antes de responder ao formulário, passe por esta experiência de um minuto.</p>
-    <button class="btn" onclick="next()">Iniciar experiência</button>
-  `);
+    const now = audioCtx.currentTime;
+    const freq = type === 'boom' ? 58 : type === 'shine' ? 620 : type === 'pulse' ? 180 : 340;
+    osc.frequency.setValueAtTime(freq, now);
+    osc.frequency.exponentialRampToValueAtTime(freq * (type === 'boom' ? 0.55 : 1.35), now + 0.35);
+    gain.gain.setValueAtTime(0.0001, now);
+    gain.gain.exponentialRampToValueAtTime(type === 'boom' ? 0.22 : 0.08, now + 0.03);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + (type === 'boom' ? 0.7 : 0.32));
+    osc.type = type === 'shine' ? 'sine' : 'triangle';
+    osc.start(now);
+    osc.stop(now + (type === 'boom' ? 0.75 : 0.35));
+  } catch (e) {}
 }
 
-function possibilidade() {
-  render(`
-    <p class="kicker">Protótipo</p>
-    <h2 class="type">Uma aula pode começar com uma experiência.</h2>
-    <p>Não para substituir a explicação. Para criar uma pergunta real antes dela.</p>
-    <button class="btn" onclick="next()">Continuar</button>
-  `);
-}
-
-function experiencia() {
-  explored = new Set();
-  render(`
-    <p class="kicker">Cena 1</p>
-    <h2>Primeiro, uma experiência.</h2>
-    <p>Toque nos círculos. Cada um revela uma pista de como uma aula pode começar.</p>
-    <div class="circles">
-      <button class="circle" onclick="openClue('fotografia', this)"><span class="icon">📷</span><strong>Fotografia</strong><small>Observar antes de concluir.</small></button>
-      <button class="circle" onclick="openClue('noticia', this)"><span class="icon">📰</span><strong>Notícia</strong><small>Ler o mundo em disputa.</small></button>
-      <button class="circle" onclick="openClue('dado', this)"><span class="icon">📊</span><strong>Dado</strong><small>Interpretar evidências.</small></button>
-    </div>
-    <p id="status">Uma aula pode começar com observação, dúvida e investigação.</p>
-    <button class="btn" onclick="next()">Depois entra a professora</button>
-  `);
-}
-
-function openClue(kind, element) {
-  clickSound();
-  explored.add(kind);
-  element.classList.add('done');
-  const data = {
-    fotografia: {
-      tag: 'Pista visual',
-      title: 'Uma imagem nunca mostra tudo.',
-      text: 'Quem aparece? Quem ficou fora? O que a fotografia revela — e o que ela esconde?'
-    },
-    noticia: {
-      tag: 'Pista textual',
-      title: 'Uma notícia também constrói uma leitura da realidade.',
-      text: 'Qual palavra orienta sua opinião? Que voz aparece? Que voz foi silenciada?'
-    },
-    dado: {
-      tag: 'Pista estatística',
-      title: 'Um número não fala sozinho.',
-      text: 'Ele precisa de contexto, comparação e interpretação sociológica.'
-    }
-  }[kind];
-  document.body.insertAdjacentHTML('beforeend', `
-    <div class="modal" onclick="this.remove()">
-      <div class="modalCard" onclick="event.stopPropagation()">
-        <p class="kicker">${data.tag}</p>
-        <h2>${data.title}</h2>
-        <p>${data.text}</p>
-        <button class="btn" onclick="this.closest('.modal').remove()">Fechar pista</button>
-      </div>
-    </div>
-  `);
-  if (explored.size === 3) {
-    successSound();
-    const status = document.getElementById('status');
-    if (status) status.innerHTML = '<strong>Você investigou três pistas.</strong> Agora a experiência precisa de explicação, conceitos e direção.';
+const scenes = [
+  {
+    time: 0,
+    sfx: 'boom',
+    html: `<div><div class="big">O mundo muda todos os dias.</div><div class="small" style="margin-top:24px">Você apenas assiste... ou aprende a compreendê-lo?</div></div>`
+  },
+  {
+    time: 2800,
+    sfx: 'pulse',
+    html: `<div class="flashgrid">
+      <div class="flash">ENEM</div><div class="flash">IA</div><div class="flash">Redes</div><div class="flash">Trabalho</div>
+      <div class="flash">Democracia</div><div class="flash">Cultura</div><div class="flash">Consumo</div><div class="flash">Escola</div>
+    </div>`
+  },
+  {
+    time: 5600,
+    sfx: 'shine',
+    html: `<div><div class="medium">Algumas portas só se abrem...</div><div class="small" style="margin-top:22px">quando você decide compreender o mundo.</div></div>`
+  },
+  {
+    time: 7800,
+    sfx: 'shine',
+    html: `<div class="door-wrap"><div class="door-light"></div><div class="door"></div></div>`
+  },
+  {
+    time: 9900,
+    sfx: 'pulse',
+    html: `<div class="roles">
+      <div class="role"><div><h2>MINHA PARTE</h2><p>Prepararei as aulas.<br>Apresentarei conteúdos, autores e conceitos.</p></div></div>
+      <div class="role"><div><h2>SUA PARTE</h2><p>Prepare-se para participar das aulas.</p></div></div>
+    </div>`
+  },
+  {
+    time: 12600,
+    sfx: 'shine',
+    html: `<div><div class="interacao">INTER <span class="plus">+</span> AÇÃO</div><div class="small" style="margin-top:22px">Uma boa aula começa quando cada um faz a sua parte.</div></div>`
+  },
+  {
+    time: 15300,
+    sfx: 'soft',
+    html: `<div class="footer"><div class="medium">O próximo semestre ainda não foi escrito.</div><div class="small">Agora a decisão também é sua.</div><button class="btn" onclick="window.history.length > 1 ? history.back() : null">Voltar ao formulário</button></div>`
   }
+];
+
+function showScene(html) {
+  const old = stage.querySelector('.scene');
+  if (old) old.classList.add('out');
+  setTimeout(() => {
+    stage.querySelectorAll('.scene.out').forEach(e => e.remove());
+    const div = document.createElement('div');
+    div.className = 'scene';
+    div.innerHTML = html;
+    stage.appendChild(div);
+  }, old ? 260 : 0);
 }
 
-function minhaParte() {
-  render(`
-    <p class="kicker">Cena 2</p>
-    <h2>Agora entra a minha parte.</h2>
-    <p class="bigline">Eu explicarei conteúdos.</p>
-    <p>Apresentarei autores, conceitos e caminhos para interpretar questões do ENEM.</p>
-    <div class="circles">
-      <div class="circle"><span class="icon">📚</span><strong>Autores</strong><small>Durkheim, Weber, Marx e outros.</small></div>
-      <div class="circle"><span class="icon">🧠</span><strong>Conceitos</strong><small>Fato social, ideologia, Estado, cultura.</small></div>
-      <div class="circle"><span class="icon">🎯</span><strong>ENEM</strong><small>Leitura, interpretação e argumentação.</small></div>
-    </div>
-    <button class="btn" onclick="next()">Ver como isso aparece no ENEM</button>
-  `);
+function startExperience() {
+  startButton.remove();
+  scenes.forEach(scene => {
+    setTimeout(() => {
+      sound(scene.sfx);
+      showScene(scene.html);
+    }, scene.time);
+  });
 }
 
-function enem() {
-  render(`
-    <p class="kicker">Cena 3</p>
-    <h2>Experiência + explicação + ENEM.</h2>
-    <p>Uma questão do ENEM raramente cobra apenas memória. Ela exige leitura de mundo.</p>
-    <div class="enemBox">
-      <p>Ao analisar uma fotografia, uma notícia ou um dado, você aprende a reconhecer <span>contexto</span>, <span>conceitos</span>, <span>evidências</span> e <span>argumentos</span>.</p>
-      <p>É isso que uma boa aula de Sociologia pode treinar.</p>
-    </div>
-    <button class="btn" onclick="next()">Entender as duas partes</button>
-  `);
-}
-
-function partes() {
-  render(`
-    <p class="kicker">Cena 4</p>
-    <h2>Uma boa aula precisa de direção e participação.</h2>
-    <div class="split">
-      <div class="role">
-        <h3>Minha parte</h3>
-        <ul>
-          <li>📚 Explicar conteúdos.</li>
-          <li>🧠 Apresentar autores e conceitos.</li>
-          <li>🔗 Relacionar teoria e realidade.</li>
-          <li>🎯 Preparar para o ENEM.</li>
-          <li>🧭 Organizar e conduzir as aulas.</li>
-        </ul>
-      </div>
-      <div class="role">
-        <h3>Sua parte</h3>
-        <ul>
-          <li>👀 Observar.</li>
-          <li>🤔 Pensar.</li>
-          <li>❓ Perguntar.</li>
-          <li>📚 Estudar.</li>
-          <li>📝 Se preparar para as aulas.</li>
-          <li>🙋 Participar das aulas.</li>
-        </ul>
-      </div>
-    </div>
-    <div class="bridge"><div class="interacao">INTER <span class="plus">+</span> AÇÃO</div></div>
-    <button class="btn" onclick="next()">Decidir</button>
-  `);
-}
-
-function decisao() {
-  successSound();
-  render(`
-    <p class="kicker">Decisão</p>
-    <h2>Esta foi apenas uma possibilidade.</h2>
-    <p class="bigline">O próximo semestre pode ser construído com experiências, explicações, autores e ENEM.</p>
-    <p>Agora volte ao formulário e responda: você gostaria que esse tipo de recurso pedagógico estivesse presente nas aulas de Sociologia?</p>
-    <p><strong>Sim, não ou depende.</strong> Explique seus motivos.</p>
-    <p class="bigline">De que forma você pode participar mais no próximo semestre?</p>
-    <button class="btn" onclick="scene = 0; intro()">Rever experiência</button>
-  `);
-}
-
-intro();
+startButton.addEventListener('click', startExperience);
