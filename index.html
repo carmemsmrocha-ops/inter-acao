@@ -7,77 +7,50 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="soundGate" class="sound-gate">
-    <div class="gate-card">
-      <p class="kicker">Experiência interativa</p>
-      <h1>INTER + AÇÃO</h1>
-      <p>Toque para iniciar com som.</p>
-      <button id="startBtn">Iniciar experiência</button>
-    </div>
-  </div>
+  <main id="app" aria-label="Experiência INTER + AÇÃO">
+    <button id="start" class="start">Iniciar experiência</button>
 
-  <main id="stage" class="stage hidden" aria-live="polite">
-    <div class="grain"></div>
-    <div class="vignette"></div>
-    <div class="pulse-bg"></div>
+    <section id="scene" class="scene hidden">
+      <div class="grain"></div>
+      <div class="vignette"></div>
+      <div id="flash" class="flash"></div>
 
-    <section class="scene scene-1 active" data-scene="1">
-      <div class="text-block opener">
-        <p class="line line-a">O mundo muda todos os dias.</p>
-        <p class="line line-b">Você apenas assiste...</p>
-        <p class="line line-c">ou aprende a compreendê-lo?</p>
+      <div id="opening" class="opening layer">
+        <p>O mundo muda todos os dias.</p>
       </div>
-    </section>
 
-    <section class="scene scene-2" data-scene="2">
-      <div class="flash-grid" aria-hidden="true">
-        <span>IA</span><span>ENEM</span><span>REDES</span><span>TRABALHO</span>
-        <span>DEMOCRACIA</span><span>CULTURA</span><span>DESIGUALDADE</span><span>ESCOLA</span>
+      <div id="montage" class="montage layer">
+        <div class="shot shot-ai"><span>IA</span></div>
+        <div class="shot shot-flood"><span>crise climática</span></div>
+        <div class="shot shot-phone"><span>redes sociais</span></div>
       </div>
-      <div class="image-burst">
-        <div class="tile t1">📱</div><div class="tile t2">🗳️</div><div class="tile t3">🌊</div><div class="tile t4">🤖</div>
-        <div class="tile t5">📚</div><div class="tile t6">📊</div><div class="tile t7">⚖️</div><div class="tile t8">🎓</div>
-      </div>
-    </section>
 
-    <section class="scene scene-3" data-scene="3">
-      <p class="door-text">Algumas portas só se abrem quando você decide compreender o mundo.</p>
-      <div class="door-wrap">
-        <div class="door-light"></div>
-        <div class="door left"></div>
-        <div class="door right"></div>
+      <div id="doorScene" class="door-scene layer">
+        <p class="door-text">Algumas portas só se abrem quando você decide compreender o mundo.</p>
+        <div class="door-wrap">
+          <div class="door-light"></div>
+          <div class="door left"></div>
+          <div class="door right"></div>
+        </div>
       </div>
-    </section>
 
-    <section class="scene scene-4" data-scene="4">
-      <div class="roles">
-        <div class="role teacher">
+      <div id="roles" class="roles layer">
+        <div class="role role-eu">
           <h2>EU</h2>
           <p>Prepararei as aulas.</p>
           <p>Apresentarei conteúdos, autores e conceitos.</p>
         </div>
-        <div class="role student">
+        <div class="role role-voce">
           <h2>VOCÊ</h2>
-          <p>Prepare-se para as aulas.</p>
-          <p>Participe das aulas.</p>
+          <p>Prepare-se para participar das aulas.</p>
         </div>
       </div>
-    </section>
 
-    <section class="scene scene-5" data-scene="5">
-      <div class="orbit">
-        <div class="orb orb-a">EU</div>
-        <div class="orb orb-b">VOCÊ</div>
+      <div id="final" class="final layer">
+        <h1><span>INTER</span><b>+</b><span>AÇÃO</span></h1>
+        <p>O próximo semestre ainda não foi escrito.</p>
+        <button id="restart" class="restart">Assistir novamente</button>
       </div>
-      <h1 class="interacao"><span>INTER</span><em>+</em><span>AÇÃO</span></h1>
-      <p class="final-line">Uma boa aula começa quando cada um faz a sua parte.</p>
-    </section>
-
-    <section class="scene scene-6" data-scene="6">
-      <p class="ending ending-a">O próximo semestre ainda não foi escrito.</p>
-      <p class="ending ending-b">Agora a decisão também é sua.</p>
-      <button id="restartBtn" class="ghost">Assistir novamente</button>
-      <p class="form-note">Volte ao formulário e responda à última pergunta.</p>
     </section>
   </main>
 
