@@ -12,4 +12,4 @@ porta.classList.remove('oculto');await esperar(3100);porta.classList.add('oculto
 venn.classList.remove('oculto');await esperar(4200);venn.classList.add('mesclar');await esperar(2600);venn.classList.add('mostrar-aula');sino();await esperar(2300);
 retornar.classList.remove('oculto');retornar.classList.add('visivel')}
 iniciar.addEventListener('click',async()=>{iniciar.disabled=true;try{criarAudio();if(ctx.state==='suspended')await ctx.resume()}catch(e){console.warn(e)}experiencia()});
-retornar.addEventListener('click',()=>{if(history.length>1)history.back();else alert('Retorne ao formulário e responda à última pergunta.')});
+retornar.addEventListener('click',()=>{window.location.href='https://docs.google.com/forms/d/e/1FAIpQLScW912RPTK4wo0lss49pQo1898S8ZXlbwJ_19v7A7msCLHN9Q/viewform?usp=header';});
