@@ -3,15 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INTER + AÇÃO — Sociologia</title>
+  <title>INTER + AÇÃO</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main id="app" class="app">
-    <section id="stage" class="stage" aria-live="polite">
-      <button id="startButton" class="start-button">Iniciar experiência</button>
+  <div id="soundGate" class="sound-gate">
+    <div class="gate-card">
+      <p class="kicker">Experiência interativa</p>
+      <h1>INTER + AÇÃO</h1>
+      <p>Toque para iniciar com som.</p>
+      <button id="startBtn">Iniciar experiência</button>
+    </div>
+  </div>
+
+  <main id="stage" class="stage hidden" aria-live="polite">
+    <div class="grain"></div>
+    <div class="vignette"></div>
+    <div class="pulse-bg"></div>
+
+    <section class="scene scene-1 active" data-scene="1">
+      <div class="text-block opener">
+        <p class="line line-a">O mundo muda todos os dias.</p>
+        <p class="line line-b">Você apenas assiste...</p>
+        <p class="line line-c">ou aprende a compreendê-lo?</p>
+      </div>
+    </section>
+
+    <section class="scene scene-2" data-scene="2">
+      <div class="flash-grid" aria-hidden="true">
+        <span>IA</span><span>ENEM</span><span>REDES</span><span>TRABALHO</span>
+        <span>DEMOCRACIA</span><span>CULTURA</span><span>DESIGUALDADE</span><span>ESCOLA</span>
+      </div>
+      <div class="image-burst">
+        <div class="tile t1">📱</div><div class="tile t2">🗳️</div><div class="tile t3">🌊</div><div class="tile t4">🤖</div>
+        <div class="tile t5">📚</div><div class="tile t6">📊</div><div class="tile t7">⚖️</div><div class="tile t8">🎓</div>
+      </div>
+    </section>
+
+    <section class="scene scene-3" data-scene="3">
+      <p class="door-text">Algumas portas só se abrem quando você decide compreender o mundo.</p>
+      <div class="door-wrap">
+        <div class="door-light"></div>
+        <div class="door left"></div>
+        <div class="door right"></div>
+      </div>
+    </section>
+
+    <section class="scene scene-4" data-scene="4">
+      <div class="roles">
+        <div class="role teacher">
+          <h2>EU</h2>
+          <p>Prepararei as aulas.</p>
+          <p>Apresentarei conteúdos, autores e conceitos.</p>
+        </div>
+        <div class="role student">
+          <h2>VOCÊ</h2>
+          <p>Prepare-se para as aulas.</p>
+          <p>Participe das aulas.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene-5" data-scene="5">
+      <div class="orbit">
+        <div class="orb orb-a">EU</div>
+        <div class="orb orb-b">VOCÊ</div>
+      </div>
+      <h1 class="interacao"><span>INTER</span><em>+</em><span>AÇÃO</span></h1>
+      <p class="final-line">Uma boa aula começa quando cada um faz a sua parte.</p>
+    </section>
+
+    <section class="scene scene-6" data-scene="6">
+      <p class="ending ending-a">O próximo semestre ainda não foi escrito.</p>
+      <p class="ending ending-b">Agora a decisão também é sua.</p>
+      <button id="restartBtn" class="ghost">Assistir novamente</button>
+      <p class="form-note">Volte ao formulário e responda à última pergunta.</p>
     </section>
   </main>
+
   <script src="script.js"></script>
 </body>
 </html>
