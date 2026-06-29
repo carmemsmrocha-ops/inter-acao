@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>INTER + AÇÃO — AULA</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="experience" class="experience" aria-label="Protótipo audiovisual INTER + AÇÃO">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <section id="start" class="start-screen">
+      <p class="kicker">Protótipo audiovisual</p>
+      <h1>INTER + AÇÃO</h1>
+      <p class="start-copy">Uma proposta para o próximo semestre de Sociologia.</p>
+      <button id="startButton" class="primary-button">Iniciar experiência</button>
+      <p class="sound-note">Toque para iniciar com som.</p>
+    </section>
+
+    <section id="stage" class="stage hidden" aria-live="polite">
+      <div id="sceneText" class="scene-text"></div>
+
+      <div id="filmStrip" class="film-strip hidden" aria-hidden="true">
+        <article class="film-frame frame-ai">
+          <video class="real-video" muted playsinline preload="metadata" data-src="assets/videos/ia.mp4"></video>
+          <div class="video-fallback">
+            <span>IA</span>
+            <small>tecnologia</small>
+          </div>
+        </article>
+        <article class="film-frame frame-social">
+          <video class="real-video" muted playsinline preload="metadata" data-src="assets/videos/redes-sociais.mp4"></video>
+          <div class="video-fallback">
+            <span>REDES</span>
+            <small>atenção</small>
+          </div>
+        </article>
+        <article class="film-frame frame-climate">
+          <video class="real-video" muted playsinline preload="metadata" data-src="assets/videos/enchente.mp4"></video>
+          <div class="video-fallback">
+            <span>ENCHENTE</span>
+            <small>sociedade</small>
+          </div>
+        </article>
+      </div>
+
+      <div id="doorScene" class="door-scene hidden" aria-hidden="true">
+        <div class="door-light"></div>
+        <div class="door left-door"></div>
+        <div class="door right-door"></div>
+      </div>
+
+      <div id="vennScene" class="venn-scene hidden" aria-hidden="true">
+        <div class="circle circle-eu">
+          <div class="circle-content">
+            <span class="label">EU</span>
+            <p>Prepararei as aulas.</p>
+            <p>Apresentarei conteúdos, autores e conceitos.</p>
+          </div>
+        </div>
+
+        <div class="circle circle-voce">
+          <div class="circle-content">
+            <span class="label">VOCÊ</span>
+            <p>Prepare-se para participar das aulas.</p>
+          </div>
+        </div>
+
+        <div id="intersectionWord" class="intersection-word">AULA</div>
+      </div>
+
+      <button id="returnButton" class="return-button hidden">Retornar às perguntas</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
